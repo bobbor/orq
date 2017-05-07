@@ -1,0 +1,9 @@
+{
+  "name": "observable-request-queue",
+  "version": "0.1.0",
+  "description": "HTTP Request Queue Optmized for Web Workers",
+  "main": "index.js",
+  "repository": "git@github.com:Kriegslustig/observable-request-queue.git",
+  "author": "Luca Nils Schmid <me@lucaschmid.net>",
+  "license": "MIT"
+}
