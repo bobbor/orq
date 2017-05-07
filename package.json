@@ -5,5 +5,31 @@
   "main": "index.js",
   "repository": "git@github.com:Kriegslustig/observable-request-queue.git",
   "author": "Luca Nils Schmid <me@lucaschmid.net>",
-  "license": "MIT"
+  "license": "MIT",
+  "scripts": {
+    "test": "ava",
+    "test:watch": "ava --watch",
+    "build": "babel src -d .",
+    "build:watch": "chokidar src -c 'babel src -d .'",
+    "prepublish": "npm run build"
+  },
+  "devDependencies": {
+    "ava": "^0.19.1",
+    "babel-cli": "^6.24.1",
+    "babel-preset-es2017": "^6.24.1",
+    "babel-preset-flow": "^6.23.0",
+    "babel-register": "^6.24.1",
+    "chokidar-cli": "^1.2.0",
+    "flow-bin": "^0.45.0",
+    "flow-typed": "^2.1.2"
+  },
+  "ava": {
+    "files": [
+      "src/**/__tests__/*.js"
+    ],
+    "require": [
+      "babel-register"
+    ],
+    "babel": "inherit"
+  }
 }
