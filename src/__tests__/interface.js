@@ -13,7 +13,7 @@ import {
   CLEAR_CACHE,
   INVALIDATE,
 } from '../lib/message'
-import mkRequestQueueInterface from '../interface'
+import mkInterface from '../interface'
 
 const mockWorker = postMessage => {
   const workerMock = new EventTarget()
@@ -36,7 +36,7 @@ test('addRequest should send the worker an object with an id, a type and a paylo
       payload: Notification.createComplete(),
     })
   })
-  return mkRequestQueueInterface(workerMock)
+  return mkInterface(workerMock)
     .addRequest('https://example.com')
 })
 
@@ -46,7 +46,7 @@ test.cb('addRequest should not propagate `unsubscribe` if not specified in the o
     t.is(message.type, REQUEST)
   })
 
-  mkRequestQueueInterface(workerMock)
+  mkInterface(workerMock)
     .addRequest('https://example.com')
     .subscribe()
     .unsubscribe()
@@ -68,7 +68,7 @@ test.cb('addRequest should propagate `unsubscribe` if specified in the options',
     t.end()
   })
 
-  mkRequestQueueInterface(workerMock)
+  mkInterface(workerMock)
     .addRequest('https://example.com', { cancelable: true })
     .subscribe()
     .unsubscribe()
@@ -86,7 +86,7 @@ test('`clear` should send a clear message to the worker.', t => {
     })
   })
 
-  return mkRequestQueueInterface(workerMock).clear()
+  return mkInterface(workerMock).clear()
 })
 
 test('`invalidate` should send an invalidate message message to the worker.', t => {
@@ -103,5 +103,5 @@ test('`invalidate` should send an invalidate message message to the worker.', t 
     })
   })
 
-  return mkRequestQueueInterface(workerMock).invalidate('url', 'method')
+  return mkInterface(workerMock).invalidate('url', 'method')
 })

@@ -1,1 +1,1 @@
-export default as mkRequestQueueInterface from './interface'
+export default as mkInterface from './interface'
