@@ -1,2 +1,1 @@
-export * from './queue'
-export * from './queue-interface'
+export default as mkRequestQueueInterface from './interface'

@@ -11,15 +11,20 @@
     "test:watch": "ava --watch",
     "build": "babel src -d .",
     "build:watch": "chokidar src -c 'babel src -d .'",
-    "prepublish": "npm run build"
+    "prepublish": "npm run build",
+    "flow": "flow",
+    "flow:watch": "chokidar src -c 'flow'",
+    "flow-typed": "flow-typed"
   },
   "devDependencies": {
+    "@ava/babel-preset-stage-4": "^1.0.0",
     "ava": "^0.19.1",
     "babel-cli": "^6.24.1",
     "babel-preset-es2017": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.24.1",
     "chokidar-cli": "^1.2.0",
+    "dom-event-target": "^1.0.0",
     "flow-bin": "^0.45.0",
     "flow-typed": "^2.1.2"
   },
@@ -31,5 +36,9 @@
       "babel-register"
     ],
     "babel": "inherit"
+  },
+  "dependencies": {
+    "rxjs": "^5.3.1",
+    "uuid": "^3.0.1"
   }
 }

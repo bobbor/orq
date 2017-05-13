@@ -1,3 +1,6 @@
 {
-  "presets": ["flow"]
+  "ignore": [
+    "**/__tests__/*.js"
+  ],
+  "presets": ["flow", "@ava/babel-preset-stage-4"]
 }
