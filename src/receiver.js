@@ -52,20 +52,16 @@ const mkRequestQueueReceiver = <Res>(
             )
             if (type === REQUEST) {
               const { url } = payload
-              if (options.method === 'GET') {
-                const key = genCacheKey(url, options)
-                return cache.get(key)
-                  .concatMap(cachedValue =>
-                    cachedValue
-                      ? O.of(cachedValue)
-                      : addRequest(url, options)
-                        .concatMap(newValue =>
-                          cache.set(key, newValue)
-                        )
-                  )
-              } else {
-                return addRequest(url, options)
-              }
+              const key = genCacheKey(url, options)
+              return cache.get(key)
+                .concatMap(cachedValue =>
+                  cachedValue
+                    ? O.of(cachedValue)
+                    : addRequest(url, options)
+                      .concatMap(newValue =>
+                        cache.set(key, newValue)
+                      )
+                )
             } else if (type === INVALIDATE) {
               const { url } = payload
               const key = genCacheKey(url, options)
