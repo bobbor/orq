@@ -1,11 +1,9 @@
 // @flow
 
 import test from 'ava'
-import { Notification } from 'rxjs'
-import EventTarget from 'dom-event-target'
+import { Notification, Observable as O } from 'rxjs'
 
-import { Observable as O } from 'rxjs/Observable'
-
+import { mockWorker } from './helpers'
 import {
   UNSUBSCRIBE,
   RESPONSE_NOTIFICATION,
@@ -14,15 +12,6 @@ import {
   INVALIDATE,
 } from '../lib/message'
 import mkInterface from '../interface'
-
-const mockWorker = postMessage => {
-  const workerMock = new EventTarget()
-  const postMessageFromWorker = (message) =>
-    workerMock.send('message', { data: message })
-  workerMock.postMessage = (message) =>
-    setTimeout(() => postMessage(message, postMessageFromWorker))
-  return workerMock
-}
 
 test('addRequest should send the worker an object with an id, a type and a payload containing request options', (t) => {
   t.plan(3)

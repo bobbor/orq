@@ -13,16 +13,7 @@ import {
   INVALIDATE,
 } from './lib/message'
 import type { Message } from './lib/message'
-
-type HttpMethods =
-  'GET' |
-  'HEAD' |
-  'POST' |
-  'PUT' |
-  'PATCH' |
-  'OPTIONS' |
-  'CONNECT' |
-  'TRACE'
+import type { HttpMethods } from './request'
 
 type RequestOptions <RequestPayload> = {
   body?: RequestPayload,
@@ -61,7 +52,6 @@ const mkRequestQueueInterface = <UrlMap, Responses> (
 const postMessageTo = (worker: Worker) => {
   const responseNotifications$ = O.fromEvent(worker, 'message')
     .pluck('data')
-    .filter(isMsgType(RESPONSE_NOTIFICATION))
 
   return (message: Message<any>, cancelable?: boolean) =>
     O.create((o) => {
