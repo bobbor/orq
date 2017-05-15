@@ -6,3 +6,8 @@ HTTP Request Queue Optmized for Web Workers.
 
 * Not widely available
 * Requests aren't cancelable
+
+## ISSUES
+
+* cannot add type constraints on request and response bodies
+

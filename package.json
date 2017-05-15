@@ -9,8 +9,8 @@
   "scripts": {
     "test": "ava",
     "test:watch": "ava --watch",
-    "build": "babel src -d .",
-    "build:watch": "chokidar src -c 'babel src -d .'",
+    "build": "babel src -d . --ignore **/__tests__/*.js",
+    "build:watch": "chokidar src -c 'npm run build'",
     "prepublish": "npm run build",
     "flow": "flow",
     "flow:watch": "chokidar src -c 'flow'",
@@ -20,7 +20,6 @@
     "@ava/babel-preset-stage-4": "^1.0.0",
     "ava": "^0.19.1",
     "babel-cli": "^6.24.1",
-    "babel-preset-es2017": "^6.24.1",
     "babel-preset-flow": "^6.23.0",
     "babel-register": "^6.24.1",
     "chokidar-cli": "^1.2.0",
