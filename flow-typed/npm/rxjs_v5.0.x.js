@@ -500,6 +500,9 @@ declare class rxjs$Observable<+T> {
     resultSelector: (a: A, b: B, c: C, d: D, e: E, f: F, g: G) => H,
   ): rxjs$Observable<H>;
 
+  static forkJoin<A>(
+    o: Array<rxjs$Observable<A>>
+  ): rxjs$Observable<Array<A>>;
   static forkJoin<A, B>(
     a: rxjs$Observable<A>,
     resultSelector: (a: A) => B,
