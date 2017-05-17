@@ -23,7 +23,7 @@ type AddRequest = (
 const mkRequestQueueReceiver = <Res>(
   worker: Worker,
   addRequest: AddRequest,
-  cache: Cache,
+  cache: Cache<[ string, string ]>,
 ): void => {
   O.fromEvent(worker, 'message')
     .pluck('data')
@@ -52,20 +52,20 @@ const mkRequestQueueReceiver = <Res>(
             )
             if (type === REQUEST) {
               const { url } = payload
-              const key = genCacheKey(url, options)
-              return cache.get(key)
+              const { method } = options
+              return cache.get([ method, url ])
                 .concatMap(cachedValue =>
                   cachedValue
                     ? O.of(cachedValue)
                     : addRequest(url, options)
                       .concatMap(newValue =>
-                        cache.set(key, newValue)
+                        cache.set([ method, url ], newValue)
                       )
                 )
             } else if (type === INVALIDATE) {
               const { url } = payload
-              const key = genCacheKey(url, options)
-              return cache.delete(key)
+              const { method } = options
+              return cache.delete([ method, url ])
             } else if (type === CLEAR_CACHE) {
               return cache.clear()
             } else {
@@ -88,8 +88,5 @@ const mkRequestQueueReceiver = <Res>(
       error => { console.error(error) }
     )
 }
-
-const genCacheKey = (url: string, options: RequestOptions) =>
-  `${options.method || 'GET'}:${url}`
 
 export default mkRequestQueueReceiver

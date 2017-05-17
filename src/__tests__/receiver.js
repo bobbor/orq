@@ -22,8 +22,8 @@ test.cb('should listen for REQUEST messages from worker and query the cache.', t
   const url = `https://example.com`
   const addRequestMock = () => O.of(response)
   const cacheMock = mockCache({
-    get: (key: string) => {
-      t.is(key, `GET:${url}`)
+    get: (key: [ string, string ]) => {
+      t.deepEqual(key, ['GET', url])
       t.end()
       return O.of('Cached Response')
     }
@@ -92,7 +92,7 @@ test.cb('should insert the response from `addRequest` into the cache.', t => {
   const url = `https://example.com`
   const addRequestMock = () => O.of(response)
   const cacheMock = mockCache({
-    set: (key: string, value: string) => {
+    set: (key: [ string, string ], value: string) => {
       t.is(value, response)
       t.end()
       return O.of(value)
@@ -124,8 +124,8 @@ test.cb('should `delete` a given item if it receives a INVALIDATE message.', t =
   const url = `https://example.com`
   const addRequestMock = () => O.of(true)
   const cacheMock = mockCache({
-    delete: (key: string) => {
-      t.is(key, `GET:${url}`)
+    delete: (key: [ string, string ]) => {
+      t.deepEqual(key, ['GET', url])
       t.end()
       return O.empty()
     }
@@ -135,3 +135,5 @@ test.cb('should `delete` a given item if it receives a INVALIDATE message.', t =
   mkReceiver(workerMock, addRequestMock, cacheMock)
   workerMock.postMessage(msg(INVALIDATE, { url }), true)
 })
+
+test.todo('should propagate errors')
