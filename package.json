@@ -4,7 +4,7 @@
   "description": "HTTP Request Queue Optmized for Web Workers",
   "main": "index.js",
   "repository": "git@github.com:Kriegslustig/observable-request-queue.git",
-  "author": "Luca Nils Schmid <me@lucaschmid.net>",
+  "author": "Luca Nils Schmid <luca.schmid@vimcar.com>",
   "license": "MIT",
   "scripts": {
     "test": "ava",

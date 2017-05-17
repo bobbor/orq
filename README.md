@@ -10,4 +10,7 @@ HTTP Request Queue Optmized for Web Workers.
 ## ISSUES
 
 * cannot add type constraints on request and response bodies
+* cache policy should limit cache item size
 
+
+_Developed at [Vimcar](https://vimcar.com/)._
