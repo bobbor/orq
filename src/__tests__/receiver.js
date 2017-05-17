@@ -136,4 +136,12 @@ test.cb('should `delete` a given item if it receives a INVALIDATE message.', t =
   workerMock.postMessage(msg(INVALIDATE, { url }), true)
 })
 
-test.todo('should propagate errors')
+test('should propagate errors', t => {
+  const url = `https://example.com`
+  const addRequestMock = () => O.throw(new Error)
+  const cacheMock = mockCache({})
+  const workerMock = mockWorker((msg) => { console.log(msg) })
+
+  mkReceiver(workerMock, addRequestMock, cacheMock)
+  workerMock.postMessage(msg(REQUEST, { url }), true)
+})
