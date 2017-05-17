@@ -25,21 +25,24 @@ export const mockWorker = (
   return workerMock
 }
 
+type CacheKey = [ string, string ]
 type CacheMockOverrides = {
-  get?: (key: string) => Rx.Observable<any>,
-  set?: (key: string, value: any) => Rx.Observable<any>,
-  has?: (key: string) => Rx.Observable<boolean>,
-  delete?: (key: string) => Rx.Observable<true>,
+  get?: (key: CacheKey) => Rx.Observable<any>,
+  set?: (key: CacheKey, value: any) => Rx.Observable<any>,
+  has?: (key: CacheKey) => Rx.Observable<boolean>,
+  delete?: (key: CacheKey) => Rx.Observable<true>,
+  deletePattern?: (pattern: RegExp) => Rx.Observable<Array<true>>,
   clear?: () => Rx.Observable<true>,
 }
 
 export const mockCache = (
   overrides: CacheMockOverrides
-): Cache =>
+): Cache<CacheKey> =>
   Object.assign({
-    get: (key: string) => O.of(undefined),
-    set: (key: string, value: string) => O.of(value),
-    has: (key: string) => O.of(true),
-    delete: (key: string) => O.of(true),
+    get: (key: CacheKey) => O.of(undefined),
+    set: (key: CacheKey, value: string) => O.of(value),
+    has: (key: CacheKey) => O.of(true),
+    delete: (key: CacheKey) => O.of(true),
+    deletePattern: (pattern: RegExp) => O.of([true]),
     clear: () => O.of(true),
   }, overrides)
