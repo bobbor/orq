@@ -24,7 +24,7 @@ type RequestOptions <RequestPayload> = {
   cancelable?: boolean,
 }
 
-const mkRequestQueueInterface = <UrlMap, Responses> (
+const mkInterface = <UrlMap, Responses> (
   worker: Worker
 ) => {
   const postMessageToWorker = postMessageTo(worker)
@@ -73,4 +73,4 @@ const postMessageTo = (worker: Worker) => {
     })
 }
 
-export default mkRequestQueueInterface
+export default mkInterface
