@@ -9,7 +9,7 @@
   "scripts": {
     "test": "ava",
     "test:watch": "ava --watch",
-    "build": "babel src -d . --ignore **/__tests__/*.js",
+    "build": "babel src --ignore __tests__ -d .",
     "build:watch": "chokidar src -c 'npm run build'",
     "prepublish": "npm run build",
     "flow": "flow",
