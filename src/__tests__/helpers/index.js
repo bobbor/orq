@@ -4,25 +4,20 @@ import Rx, { Observable as O } from 'rxjs'
 import EventTarget from 'dom-event-target'
 import type { Cache } from '../../cache'
 
-export const mockWorker = (
-  maybePostMessage?: (
-    message: any,
-    postMessage: (message: any) => void
-  ) => void
-) => {
-  const workerMock = new EventTarget()
-  const postMessageFromWorker = (message) =>
-    workerMock.send('message', { data: message })
-  const postMessage =
-    typeof maybePostMessage === 'function'
-      ? maybePostMessage
-      : () => {}
-  workerMock.postMessage = (message, ignoreIntercept) => setTimeout(() =>
-    ignoreIntercept
-      ? postMessageFromWorker(message)
-      : postMessage(message, postMessageFromWorker)
-  )
-  return workerMock
+export const mockWorker = () => {
+  const worker = new EventTarget()
+  const main = new EventTarget()
+  main.postMessage = (message) => {
+    setTimeout(() =>
+      worker.send('message', { data: message })
+    )
+  }
+  worker.postMessage = (message) => {
+    setTimeout(() =>
+      main.send('message', { data: message })
+    )
+  }
+  return [main, worker]
 }
 
 type CacheKey = [ string, string ]
