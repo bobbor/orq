@@ -49,8 +49,8 @@ const mkRequestQueueReceiver = <Res>(
           .concatMap(() => {
             const { type, id, payload } = message
             const options = Object.assign(
-              (payload && payload.options) || {},
-              { method: 'GET' }
+              { method: 'GET' },
+              (payload && payload.options) || {}
             )
             if (type === REQUEST) {
               const { url } = payload
