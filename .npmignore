@@ -1,3 +1,6 @@
 /src
 .babelrc
 .tern-port
+.travis.yml
+.flowconfig
+/flow-typed
