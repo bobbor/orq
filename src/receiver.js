@@ -1,6 +1,6 @@
 // @flow
 
-import Rx, { Observable as O, Notification } from 'rxjs'
+import Rx, { Observable as O, Notification, Subject } from 'rxjs'
 
 import {
   msg,
@@ -34,8 +34,10 @@ const mkRequestQueueReceiver = <Res>(
         // FIXME: this is fucked. find a better way!
         let message
         let testSub
+        const done$ = new Subject()
 
         const sub = message$
+          .takeUntil(done$)
           .do(tmpMessage => {
             message = tmpMessage
           })
@@ -81,6 +83,7 @@ const mkRequestQueueReceiver = <Res>(
                 notification,
                 id
               ))
+              done$.next(true)
             },
             error => { console.error(error) }
           )

@@ -148,3 +148,18 @@ test.cb('should propagate errors', t => {
   mkReceiver(worker, addRequestMock, cacheMock)
   main.postMessage(msg(REQUEST, { url }), true)
 })
+
+test.cb('should send back a complete message', t => {
+  const url = `https://example.com`
+  const addRequestMock = () => O.of(true)
+  const cacheMock = mockCache({})
+  const [main, worker] = mockWorker()
+  main.addEventListener('message', ({ data: message }) => {
+    if (message.payload.kind === 'N') return
+    t.is(message.payload.kind, 'C')
+    t.end()
+  })
+
+  mkReceiver(worker, addRequestMock, cacheMock)
+  main.postMessage(msg(REQUEST, { url }), true)
+})
