@@ -27,25 +27,6 @@ test('`delete` should remove a specific item from the cache', t => {
     .concatMap(() => cache.has('a'))
     .do(hasValue => t.false(hasValue))
 })
-test('`deletePattern` should remove all items matching a given pattern', t => {
-  const cache: Cache<string> = mkMemCache()
-  return O.forkJoin([
-    cache.set('a', 'value'),
-    cache.set('aa', 'value2'),
-    cache.set('b', 'value3'),
-  ])
-    .concatMap(() => cache.deletePattern(/a+/))
-    .concatMap(() => O.forkJoin([
-      cache.has('a'),
-      cache.has('aa'),
-      cache.has('b'),
-    ]))
-    .do(([a, aa, b]) => {
-      t.false(a)
-      t.false(aa)
-      t.true(b)
-    })
-})
 
 test('`clear` should remove all items in the cache', t => {
   const cache: Cache<string> = mkMemCache()

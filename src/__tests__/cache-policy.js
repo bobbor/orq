@@ -55,8 +55,8 @@ test('should invalidate a cache entry if a ressource contained in it is modified
   const cache = mkCachePolicy({
     ressources: {
       [baseUrl]: {
-        '/fish': {
-          containedIn: ['/list-fish'],
+        '/list-fish': {
+          contains: ['/fish', '/fish/.*'],
         },
       },
     },

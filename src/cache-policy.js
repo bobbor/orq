@@ -33,7 +33,7 @@ export type CachePolicy = {
     [BaseUrl: string]: {
       [Path: string]: {
         ttl?: number,
-        containedIn?: Array<string>
+        contains?: Array<string>
       }
     }
   }
@@ -56,19 +56,32 @@ const mkCachePolicy =
       const path = url.replace(matchingBaseUrl, '')
       return ressources[matchingBaseUrl][path]
     }
-    const patternsInPolicy = (url: string) => {
-      const baseUrl = getBaseUrl(url)
-      if (!baseUrl) return []
-      const ressourcePolicy = getRessourcePolicy(url, baseUrl)
-      if (!ressourcePolicy || !ressourcePolicy.containedIn) return []
-      return ressourcePolicy.containedIn.map(pattern =>
-        new RegExp(`^GET:${baseUrl}${pattern}$`)
-      )
-    }
+    const cacheInvalidationRules: Array<[ RegExp, string ]> =
+      baseUrls.reduce((rules, baseUrl) => {
+        if (!policy.ressources) return rules
+        const ressourcePolicy = policy.ressources[baseUrl]
+        if (!ressourcePolicy) return rules
+        const paths = Object.keys(ressourcePolicy)
+        return rules.concat(paths.reduce((pathRules, path) => {
+          const contains = ressourcePolicy[path].contains
+          if (!contains) return pathRules
+          return pathRules.concat(contains.reduce((containsRules, pattern) => {
+            containsRules.push([
+              new RegExp(`^${baseUrl}${pattern}$`),
+              `${baseUrl}${path}`
+            ])
+            return containsRules
+          }, []))
+        }, []))
+      }, [])
+    const getContainerUrls = (url: string): Array<string> =>
+      cacheInvalidationRules
+        .filter(([ pattern ]) => pattern.test(url))
+        .map(([ , url ]) => url)
     const dependantCacheUrls = (url: string) => [
       url,
       dropLastSegment(1, url),
-      ...patternsInPolicy(url)
+      ...getContainerUrls(url)
     ]
 
     return (cache: Cache<string>): Cache<CacheKey> => ({
@@ -103,11 +116,7 @@ const mkCachePolicy =
         ) {
           return O.from(
             dependantCacheUrls(url)
-              .map(patternOrUrl =>
-                typeof patternOrUrl === 'string'
-                  ? cache.delete(genKey(['GET', patternOrUrl]))
-                  : cache.deletePattern(patternOrUrl)
-              )
+              .map(url => cache.delete(genKey(['GET', url])))
           ).mergeAll().toArray().mapTo(undefined)
         } else {
           return O.of(undefined)
@@ -115,7 +124,6 @@ const mkCachePolicy =
       },
       has: (cacheKey: CacheKey) => cache.has(genKey(cacheKey)),
       delete: (cacheKey: CacheKey) => cache.delete(genKey(cacheKey)),
-      deletePattern: cache.deletePattern,
       clear: cache.clear
     })
   }

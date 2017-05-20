@@ -7,6 +7,5 @@ export type Cache<K> = {
   set: (key: K, value: any) => Rx.Observable<any>,
   has: (key: K) => Rx.Observable<boolean>,
   delete: (key: K) => Rx.Observable<true>,
-  deletePattern: (keyPattern: RegExp) => Rx.Observable<Array<true>>,
   clear: () => Rx.Observable<true>,
 }

@@ -24,14 +24,6 @@ const mkMemCache = <Value>() => {
       delete store[key]
       return O.of(true)
     },
-    deletePattern: (pattern: RegExp) =>
-      O.from(
-        Object.keys(store)
-          .filter(key => pattern.test(key))
-          .map(cache.delete)
-      )
-        .mergeAll()
-        .toArray(),
     set: (key: string, value: Value) => {
       if (value === undefined) {
         return O.throw(new Error(undefinedValueError))
