@@ -109,7 +109,7 @@ test.cb('should cancel unsubscribed requests', t => {
   const cache = mkCachePolicy({ ttl: 100 })(mkMemCache())
   mkReceiver(worker, addRequest, cache)
   const orq = mkInterface(main)
-  const sub = orq.addRequest('https://example.com', { method: 'POST', cancelable: true })
+  const sub = orq.addRequest('https://example.com', { method: 'POST' })
     .subscribe()
   setTimeout(() => {
     sub.unsubscribe()

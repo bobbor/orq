@@ -36,7 +36,7 @@ const mkInterface = <UrlMap, Responses> (
     ): Rx.Observable<Response> =>
       postMessageToWorker(
         msg(REQUEST, { url, options }),
-        options ? options.cancelable : false
+        isCancelable(options)
       ),
     clear: (): Rx.Observable<void> =>
       postMessageToWorker(
@@ -71,6 +71,13 @@ const postMessageTo = (worker: Worker) => {
         return teardown
       }
     })
+}
+
+const isCancelable = (options) => {
+  if (!options) return false
+  return options.cancelable === undefined
+    ? options.method && options.method !== 'GET'
+    : options.cancelable
 }
 
 export default mkInterface
