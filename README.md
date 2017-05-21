@@ -1,6 +1,6 @@
 # orq - Observable Request Queue
 
-[![Build Status](https://travis-ci.org/Kriegslustig/observable-request-queue.svg?branch=master)](https://travis-ci.org/Kriegslustig/observable-request-queue)
+[![Build Status](https://travis-ci.org/Kriegslustig/orq.svg?branch=master)](https://travis-ci.org/Kriegslustig/orq)
 
 HTTP Request Queue Optimized for Web Workers.
 

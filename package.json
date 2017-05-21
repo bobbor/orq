@@ -1,9 +1,9 @@
 {
-  "name": "observable-request-queue",
+  "name": "orq",
   "version": "0.1.0",
-  "description": "HTTP Request Queue Optmized for Web Workers",
+  "description": "HTTP Request Queue Optimized for Web Workers.",
   "main": "index.js",
-  "repository": "git@github.com:Kriegslustig/observable-request-queue.git",
+  "repository": "git@github.com:Kriegslustig/orq.git",
   "author": "Luca Nils Schmid <luca.schmid@vimcar.com>",
   "license": "MIT",
   "scripts": {
