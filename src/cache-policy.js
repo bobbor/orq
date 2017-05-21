@@ -1,12 +1,12 @@
 /**
  * @flow
  * Enforces a caching policy. Essentially the policy is a TTL cache. But in
- * addition you can define dependencies between different ressources.
+ * addition you can define dependencies between different resources.
  * By default cache-policy tries to do work in a RESTful manner.
- * E.g. if we have a ressource `/user/${id}`, and a PUT is done on that same
- * ressource, cache-policy will invalidate the cached `/user/${id}`.
+ * E.g. if we have a resource `/user/${id}`, and a PUT is done on that same
+ * resource, cache-policy will invalidate the cached `/user/${id}`.
  * If you have a more complex URL scheme, you can define dependencies between
- * ressources. E.g.:
+ * resources. E.g.:
  * {
  *   "http://example.com": {
  *     "/list-fish": {
@@ -29,7 +29,7 @@ const DEFAULT_TTL = 210
 export type CacheKey = [ string, string ]
 export type CachePolicy = {
   ttl?: number,
-  ressources?: {
+  resources?: {
     [BaseUrl: string]: {
       [Path: string]: {
         ttl?: number,
@@ -43,27 +43,27 @@ const mkCachePolicy =
   (policy: CachePolicy) => {
     const defaultTtl = policy.ttl || DEFAULT_TTL
 
-    const baseUrls = Object.keys(policy.ressources || {})
+    const baseUrls = Object.keys(policy.resources || {})
     const getBaseUrl = (url: string) =>
       baseUrls.find(baseUrl =>
         url.indexOf(baseUrl) === 0
       )
     const getRessourcePolicy = (url: string, baseUrl?: string) => {
-      const { ressources } = policy
-      if (typeof ressources !== 'object') return undefined
+      const { resources } = policy
+      if (typeof resources !== 'object') return undefined
       const matchingBaseUrl = baseUrl || getBaseUrl(url)
       if (matchingBaseUrl === undefined) return undefined
       const path = url.replace(matchingBaseUrl, '')
-      return ressources[matchingBaseUrl][path]
+      return resources[matchingBaseUrl][path]
     }
     const cacheInvalidationRules: Array<[ RegExp, string ]> =
       baseUrls.reduce((rules, baseUrl) => {
-        if (!policy.ressources) return rules
-        const ressourcePolicy = policy.ressources[baseUrl]
-        if (!ressourcePolicy) return rules
-        const paths = Object.keys(ressourcePolicy)
+        if (!policy.resources) return rules
+        const resourcePolicy = policy.resources[baseUrl]
+        if (!resourcePolicy) return rules
+        const paths = Object.keys(resourcePolicy)
         return rules.concat(paths.reduce((pathRules, path) => {
-          const contains = ressourcePolicy[path].contains
+          const contains = resourcePolicy[path].contains
           if (!contains) return pathRules
           return pathRules.concat(contains.reduce((containsRules, pattern) => {
             containsRules.push([
@@ -86,11 +86,11 @@ const mkCachePolicy =
 
     return (cache: Cache<string>): Cache<CacheKey> => ({
       set: ([ method, url ]: CacheKey, value: any) => {
-        const ressourcePolicy = getRessourcePolicy(url)
+        const resourcePolicy = getRessourcePolicy(url)
         const ttl =
-          ressourcePolicy &&
-          typeof ressourcePolicy.ttl === 'number'
-            ? ressourcePolicy.ttl
+          resourcePolicy &&
+          typeof resourcePolicy.ttl === 'number'
+            ? resourcePolicy.ttl
             : defaultTtl
         return cache.set(genKey([method, url]), {
           validUntil: Date.now() + ttl,

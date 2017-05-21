@@ -22,7 +22,7 @@ test('should invalidate a cache entry after its ttl is passed', t => {
     )
 })
 
-test('should invalidate a cache entry for a ressource when a specific ressource is changed through PUT/PATCH', t => {
+test('should invalidate a cache entry for a resource when a specific resource is changed through PUT/PATCH', t => {
   const cache = mkCachePolicy({})(mkMemCache())
   const url = 'https://example.com/fish/42'
   return cache.set(['GET', url], 'response')
@@ -31,7 +31,7 @@ test('should invalidate a cache entry for a ressource when a specific ressource 
     .do(value => t.is(value, undefined))
 })
 
-test('should invalidate a cache entry for the list call of a ressource when a ressource is changed through PUT/PATCH', t => {
+test('should invalidate a cache entry for the list call of a resource when a resource is changed through PUT/PATCH', t => {
   const cache = mkCachePolicy({})(mkMemCache())
   const url = 'https://example.com/fish'
   return cache.set(['GET', url], 'response')
@@ -40,7 +40,7 @@ test('should invalidate a cache entry for the list call of a ressource when a re
     .do(value => t.is(value, undefined))
 })
 
-test('should invalidate a cache entry for the list call of a ressource when another ressource is added through POST', t => {
+test('should invalidate a cache entry for the list call of a resource when another resource is added through POST', t => {
   const cache = mkCachePolicy({})(mkMemCache())
   const url = 'https://example.com/fish'
   return cache.set(['GET', url], 'response')
@@ -49,11 +49,11 @@ test('should invalidate a cache entry for the list call of a ressource when anot
     .do(value => t.is(value, undefined))
 })
 
-test('should invalidate a cache entry if a ressource contained in it is modified', t => {
+test('should invalidate a cache entry if a resource contained in it is modified', t => {
   const baseUrl = 'https://example.com'
   const path = `/list-fish`
   const cache = mkCachePolicy({
-    ressources: {
+    resources: {
       [baseUrl]: {
         '/list-fish': {
           contains: ['/fish', '/fish/.*'],
@@ -81,7 +81,7 @@ test('the default ttl should overridable in the endpoint specification', t => {
   const response = 'response'
   const cache = mkCachePolicy({
     ttl: 1,
-    ressources: {
+    resources: {
       [baseUrl]: {
         '/fish': {
           ttl: 100
