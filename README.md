@@ -95,8 +95,8 @@ The `request` implementation isn't implemented by `orq` itself. So you may write
 
 ## TODO
 
+* update deps
 * write @orq/superagent
-* optimize rxjs imports
 * cannot add type constraints on request and response bodies
 * cache policy should limit cache item size
 

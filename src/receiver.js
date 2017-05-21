@@ -1,6 +1,26 @@
 // @flow
 
-import Rx, { Observable as O, Notification, Subject } from 'rxjs'
+import { Observable as O } from 'rxjs/Observable'
+import { Notification } from 'rxjs/Notification'
+import { Subject } from 'rxjs/Subject'
+// $FlowFixMe
+import 'rxjs/add/observable/of'
+// $FlowFixMe
+import 'rxjs/add/observable/empty'
+// $FlowFixMe
+import 'rxjs/add/operator/pluck'
+// $FlowFixMe
+import 'rxjs/add/operator/filter'
+// $FlowFixMe
+import 'rxjs/add/operator/takeUntil'
+// $FlowFixMe
+import 'rxjs/add/operator/groupBy'
+// $FlowFixMe
+import 'rxjs/add/operator/do'
+// $FlowFixMe
+import 'rxjs/add/operator/concatMap'
+// $FlowFixMe
+import 'rxjs/add/operator/materialize'
 
 import {
   msg,
@@ -18,7 +38,7 @@ import type { RequestOptions } from './request'
 type AddRequest = (
   url: string,
   options?: RequestOptions
-) => Rx.Observable<any>
+) => rxjs$Observable<any>
 
 const mkRequestQueueReceiver = <Res>(
   worker: Worker,

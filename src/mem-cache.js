@@ -12,7 +12,11 @@
  * TODO: Kap cache object size.
  */
 
-import Rx, { Observable as O } from 'rxjs'
+import { Observable as O } from 'rxjs/Observable'
+// $FlowFixMe
+import 'rxjs/add/observable/throw'
+// $FlowFixMe
+import 'rxjs/add/observable/of'
 
 const undefinedValueError = 'undefined may not be passed as a value to setItem.'
 
@@ -35,7 +39,7 @@ const mkMemCache = <Value>() => {
       const item = store[key]
       return O.of(store.hasOwnProperty(key))
     },
-    get: (key: string): Rx.Observable<Value|void> => {
+    get: (key: string): rxjs$Observable<Value|void> => {
       return cache.has(key)
         ? O.of(store[key])
         : O.of(undefined)

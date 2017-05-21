@@ -801,3 +801,9 @@ declare module 'rxjs/Subscription' {
     Subscription: typeof rxjs$Subscription
   }
 }
+
+declare module 'rxjs/Notification' {
+  declare module.exports: {
+    Notification: Object
+  }
+}

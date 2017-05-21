@@ -2,7 +2,21 @@
  * request-queue manages request concurrency and eliminates duplicate requests.
  */
 
-import Rx, { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
+// $FlowFixMe
+import 'rxjs/add/operator/map'
+// $FlowFixMe
+import 'rxjs/add/operator/do'
+// $FlowFixMe
+import 'rxjs/add/operator/share'
+// $FlowFixMe
+import 'rxjs/add/operator/materialize'
+// $FlowFixMe
+import 'rxjs/add/operator/dematerialize'
+// $FlowFixMe
+import 'rxjs/add/operator/filter'
+// $FlowFixMe
+import 'rxjs/add/operator/mergeAll'
 
 import type { Request, RequestOptions } from './request'
 

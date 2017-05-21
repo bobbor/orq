@@ -1,6 +1,16 @@
 // @flow
 
-import Rx, { Observable as O } from 'rxjs/Observable'
+import { Observable as O } from 'rxjs/Observable'
+// $FlowFixMe
+import 'rxjs/add/observable/fromEvent'
+// $FlowFixMe
+import 'rxjs/add/operator/filter'
+// $FlowFixMe
+import 'rxjs/add/operator/pluck'
+// $FlowFixMe
+import 'rxjs/add/operator/dematerialize'
+// $FlowFixMe
+import 'rxjs/add/operator/do'
 
 import {
   isResponseMsg,
@@ -33,16 +43,16 @@ const mkInterface = <UrlMap, Responses> (
     addRequest: <RequestPayload, Response>(
       url: string,
       options?: RequestOptions<RequestPayload>
-    ): Rx.Observable<Response> =>
+    ): rxjs$Observable<Response> =>
       postMessageToWorker(
         msg(REQUEST, { url, options }),
         isCancelable(options)
       ),
-    clear: (): Rx.Observable<void> =>
+    clear: (): rxjs$Observable<void> =>
       postMessageToWorker(
         msg(CLEAR_CACHE)
       ),
-    invalidate: (url: string, method?: string): Rx.Observable<void> =>
+    invalidate: (url: string, method?: string): rxjs$Observable<void> =>
       postMessageToWorker(
         msg(INVALIDATE, { url, method })
       ),

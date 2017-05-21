@@ -18,7 +18,21 @@
  * whenever a POST is done on `/fish` or a PUT/PATH is done on `/fish/*`.
  */
 
-import { Observable as O } from 'rxjs'
+import { Observable as O } from 'rxjs/Observable'
+// $FlowFixMe
+import 'rxjs/add/observable/of'
+// $FlowFixMe
+import 'rxjs/add/observable/from'
+// $FlowFixMe
+import 'rxjs/add/operator/map'
+// $FlowFixMe
+import 'rxjs/add/operator/concatMap'
+// $FlowFixMe
+import 'rxjs/add/operator/mapTo'
+// $FlowFixMe
+import 'rxjs/add/operator/mergeAll'
+// $FlowFixMe
+import 'rxjs/add/operator/toArray'
 
 import { dropLastSegment } from './lib/utils'
 import type { Cache } from './cache'

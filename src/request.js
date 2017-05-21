@@ -1,7 +1,5 @@
 // @flow
 
-import { Observable } from 'rxjs'
-
 export type HttpMethods =
   'GET' |
   'HEAD' |
@@ -24,4 +22,4 @@ export type RequestOptions = {
 export type Request = (
   url: string,
   options?: RequestOptions
-) => Observable<any>
+) => rxjs$Observable<any>
