@@ -12,7 +12,7 @@
     "build": "npm run build:babel && npm run build:flow",
     "build:babel": "babel src --ignore __tests__ -d .",
     "build:watch": "chokidar src -c 'npm run build:babel'",
-    "build:flow": "flow-copy-source src .",
+    "build:flow": "flow gen-flow-files src/index.js > index.flow.js",
     "prepublish": "npm run build",
     "flow": "flow",
     "flow:watch": "chokidar src -c 'flow'",
@@ -28,7 +28,6 @@
     "chokidar-cli": "^1.2.0",
     "dom-event-target": "^1.0.0",
     "flow-bin": "^0.46.0",
-    "flow-copy-source": "^1.1.0",
     "flow-typed": "^2.1.2",
     "standard-version": "^4.0.0"
   },
