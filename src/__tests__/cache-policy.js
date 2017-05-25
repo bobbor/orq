@@ -97,3 +97,10 @@ test('the default ttl should overridable in the endpoint specification', t => {
     .concatMap(() => cache.get(key))
     .do(value => t.is(value, undefined))
 })
+
+test('cache-policy.set should return an observable of the passed value', t => {
+  const cache = mkCachePolicy({})(mkMemCache())
+  const key = ['GET', 'https://example.com']
+  return cache.set(key, 'response')
+    .do((value) => t.is(value, 'response'))
+})

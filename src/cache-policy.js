@@ -109,7 +109,7 @@ const mkCachePolicy =
         return cache.set(genKey([method, url]), {
           validUntil: Date.now() + ttl,
           value,
-        })
+        }).mapTo(value)
       },
 
       get: ([ method, url ]: CacheKey) => {
