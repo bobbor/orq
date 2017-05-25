@@ -4,17 +4,20 @@ import Rx, { Observable as O } from 'rxjs'
 import EventTarget from 'dom-event-target'
 import type { Cache } from '../../cache'
 
+const serializable = (x) => JSON.parse(
+  JSON.stringify(x)
+)
 export const mockWorker = () => {
   const worker = new EventTarget()
   const main = new EventTarget()
   main.postMessage = (message) => {
     setTimeout(() =>
-      worker.send('message', { data: message })
+      worker.send('message', { data: serializable(message) })
     )
   }
   worker.postMessage = (message) => {
     setTimeout(() =>
-      main.send('message', { data: message })
+      main.send('message', { data: serializable(message) })
     )
   }
   return [main, worker]

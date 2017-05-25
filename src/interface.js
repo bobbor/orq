@@ -1,6 +1,7 @@
 // @flow
 
 import { Observable as O } from 'rxjs/Observable'
+import { Notification } from 'rxjs/Notification'
 // $FlowFixMe
 import 'rxjs/add/observable/fromEvent'
 // $FlowFixMe
@@ -70,6 +71,9 @@ const postMessageTo = (worker: Worker) => {
       responseNotifications$
         .filter(isResponseMsg(message))
         .pluck('payload')
+        .map(({ kind, value, error }) =>
+          new Notification(kind, value, error)
+        )
         .dematerialize()
         .do(undefined, undefined, () => { done = true })
         .subscribe(o)

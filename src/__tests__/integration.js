@@ -17,7 +17,7 @@ test('should call request function', t => {
   const [main, worker] = mockWorker()
   const requestMock = (url, options) => {
     t.is(url, 'https://example.com')
-    return O.of(true)
+    return O.of('YOLOTROLO')
   }
 
   const addRequest = mkRequestQueue(requestMock)
@@ -25,6 +25,7 @@ test('should call request function', t => {
   mkReceiver(worker, addRequest, cache)
   const orq = mkInterface(main)
   return orq.addRequest('https://example.com')
+    .do((res) => { t.is(res, 'YOLOTROLO') })
 })
 
 test('should have a ttl cache', t => {

@@ -762,7 +762,7 @@ declare module 'rxjs' {
     },
     Subscription: typeof rxjs$Subscription,
     TimeoutError: typeof rxjs$TimeoutError,
-    Notification: Object,
+    Notification: any,
   }
 }
 
@@ -804,6 +804,6 @@ declare module 'rxjs/Subscription' {
 
 declare module 'rxjs/Notification' {
   declare module.exports: {
-    Notification: Object
+    Notification: any
   }
 }
