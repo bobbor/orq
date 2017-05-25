@@ -12,6 +12,8 @@ import 'rxjs/add/operator/pluck'
 import 'rxjs/add/operator/dematerialize'
 // $FlowFixMe
 import 'rxjs/add/operator/do'
+// $FlowFixMe
+import 'rxjs/add/operator/map'
 
 import {
   isResponseMsg,
