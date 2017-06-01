@@ -1,3 +1,3 @@
 {
-  "presets": ["flow", "@ava/babel-preset-stage-4"]
+  "presets": ["flow", "es2015"]
 }
