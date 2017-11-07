@@ -16,7 +16,7 @@ test('should invalidate a cache entry after its ttl is passed', t => {
     .do(cachedValue => t.is(cachedValue, response))
     .concatMap(() =>
       O.of(true)
-        .delay(10)
+        .delay(12)
         .concatMap(() => cache.get(key))
         .do(value => t.is(value, undefined))
     )
