@@ -41,7 +41,9 @@
     "babel": "inherit"
   },
   "dependencies": {
-    "rxjs": "^5.4.0",
     "uuid": "^3.0.1"
+  },
+  "peerDependency": {
+    "rxjs": "^5.5.2"
   }
 }
