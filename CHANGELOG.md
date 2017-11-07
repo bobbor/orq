@@ -2,6 +2,16 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.2.0"></a>
+# [0.2.0](https://github.com/Kriegslustig/orq/compare/v0.1.8...v0.2.0) (2017-11-07)
+
+
+### Features
+
+* **package.json:** make rxjs a peerDependency ([58c4c3a](https://github.com/Kriegslustig/orq/commit/58c4c3a))
+
+
+
 <a name="0.1.7"></a>
 ## [0.1.7](https://github.com/Kriegslustig/orq/compare/v0.1.6...v0.1.7) (2017-05-25)
 
