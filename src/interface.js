@@ -47,10 +47,13 @@ const mkInterface = <UrlMap, Responses> (
       url: string,
       options?: RequestOptions<RequestPayload>
     ): rxjs$Observable<Response> =>
-      postMessageToWorker(
-        msg(REQUEST, { url, options }),
-        isCancelable(options)
-      ),
+      O.create((observer) => {
+        postMessageToWorker(
+          msg(REQUEST, { url, options }),
+          isCancelable(options)
+        )
+          .subscribe(observer)
+      }),
     clear: (): rxjs$Observable<void> =>
       postMessageToWorker(
         msg(CLEAR_CACHE)

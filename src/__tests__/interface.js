@@ -64,6 +64,27 @@ test.cb('addRequest should propagate `unsubscribe` if specified in the options',
     .unsubscribe()
 })
 
+test('addRequest should redo a request when a new subscription is made', (t) => {
+  t.plan(2)
+  const [main, worker] = mockWorker()
+
+  let id = null
+  worker.addEventListener('message', ({ data: message }) => {
+    t.true(id !== message.id)
+    id = message.id
+    worker.postMessage({
+      id: message.id,
+      type: RESPONSE_NOTIFICATION,
+      payload: Notification.createComplete(),
+    })
+  })
+
+  const r$ = mkInterface(main)
+    .addRequest('https://example.com')
+
+  return O.merge(r$, r$)
+})
+
 test('`clear` should send a clear message to the worker.', t => {
   t.plan(1)
   const [main, worker] = mockWorker()
