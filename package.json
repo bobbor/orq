@@ -18,7 +18,7 @@
     "flow:watch": "chokidar src -c 'flow'",
     "flow-typed": "flow-typed",
     "release": "standard-version",
-    "ci": "npm i rxjs && npm run test"
+    "ci": "npm i rxjs@5 && npm run test"
   },
   "devDependencies": {
     "ava": "^0.19.1",
