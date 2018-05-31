@@ -8,7 +8,7 @@ import mkMemCache from '../mem-cache'
 import mkCachePolicy from '../cache-policy'
 
 test('should invalidate a cache entry after its ttl is passed', t => {
-  const cache = mkCachePolicy({ ttl: 10 })(mkMemCache())
+  const cache = mkCachePolicy({ ttl: 100 })(mkMemCache())
   const key = ['GET', 'https://example.com']
   const response = 'response'
   return cache.set(key, response)
@@ -16,7 +16,7 @@ test('should invalidate a cache entry after its ttl is passed', t => {
     .do(cachedValue => t.is(cachedValue, response))
     .concatMap(() =>
       O.of(true)
-        .delay(12)
+        .delay(102)
         .concatMap(() => cache.get(key))
         .do(value => t.is(value, undefined))
     )
