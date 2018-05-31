@@ -2,6 +2,22 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+<a name="0.3.0"></a>
+# [0.3.0](https://github.com/Kriegslustig/orq/compare/v0.2.1...v0.3.0) (2018-05-31)
+
+
+### Bug Fixes
+
+* use flow-copy-source instead of flow gen-flow-files ([516a28b](https://github.com/Kriegslustig/orq/commit/516a28b))
+
+
+### Features
+
+* allow passing redirects option to request client ([f67c8a4](https://github.com/Kriegslustig/orq/commit/f67c8a4))
+* allow retrying requests ([94b9881](https://github.com/Kriegslustig/orq/commit/94b9881))
+
+
+
 <a name="0.2.1"></a>
 ## [0.2.1](https://github.com/Kriegslustig/orq/compare/v0.2.0...v0.2.1) (2017-11-07)
 
