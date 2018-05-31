@@ -28,13 +28,14 @@ import {
 import type { Message } from './lib/message'
 import type { HttpMethods } from './request'
 
-type RequestOptions <RequestPayload> = {
+export type RequestOptions <RequestPayload> = {
   body?: RequestPayload,
   method?: HttpMethods,
   headers?: { [string]: string },
   fromRemote?: boolean,
   cacheResponse?: boolean,
   cancelable?: boolean,
+  redirects?: number,
 }
 
 const mkInterface = <UrlMap, Responses> (
