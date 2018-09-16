@@ -2,6 +2,7 @@
 
 import { Observable as O } from 'rxjs'
 import test from 'ava'
+import sinon from 'sinon'
 
 import mkMemCache from '../mem-cache'
 
@@ -103,4 +104,17 @@ test('cache-policy.set should return an observable of the passed value', t => {
   const key = ['GET', 'https://example.com']
   return cache.set(key, 'response')
     .do((value) => t.is(value, 'response'))
+})
+
+test('cache-policy.set should not do anything if the TTL is zero', t => {
+  const memCache = mkMemCache()
+  const cache = mkCachePolicy({ ttl: 0 })(memCache)
+  memCache.set = sinon.spy(() => O.of(true))
+  const next = sinon.spy()
+  const value = '42'
+
+  cache.set([ 'GET', 'b' ], value).subscribe(next)
+
+  t.is(next.getCall(0).args[0], value)
+  t.is(memCache.set.called, false)
 })

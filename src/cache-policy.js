@@ -55,7 +55,9 @@ export type CachePolicy = {
 
 const mkCachePolicy =
   (policy: CachePolicy) => {
-    const defaultTtl = policy.ttl || DEFAULT_TTL
+    const defaultTtl = typeof policy.ttl === 'number'
+      ? policy.ttl
+      : DEFAULT_TTL
 
     const baseUrls = Object.keys(policy.resources || {})
     const getBaseUrl = (url: string) =>
@@ -106,6 +108,7 @@ const mkCachePolicy =
           typeof resourcePolicy.ttl === 'number'
             ? resourcePolicy.ttl
             : defaultTtl
+        if (ttl === 0) return O.of(value)
         return cache.set(genKey([method, url]), {
           validUntil: Date.now() + ttl,
           value,
