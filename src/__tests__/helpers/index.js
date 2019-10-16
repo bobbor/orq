@@ -1,6 +1,7 @@
 // @flow
 
-import { Observable as O, of } from 'rxjs'
+import { Observable as O} from 'rxjs/Observable'
+import {of} from 'rxjs/observable/of'
 import EventTarget from 'dom-event-target'
 import type { Cache } from '../../cache'
 

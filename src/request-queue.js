@@ -2,7 +2,7 @@
  * request-queue manages request concurrency and eliminates duplicate requests.
  */
 
-import { BehaviorSubject } from 'rxjs'
+import { BehaviorSubject } from 'rxjs/BehaviorSubject'
 import {
   map,
   tap,

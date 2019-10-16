@@ -1,7 +1,10 @@
 // @flow
 
 import test from 'ava'
-import {Observable as O, throwError, of as rxOf, empty} from 'rxjs'
+import {Observable as O} from 'rxjs/Observable'
+import {of} from 'rxjs/observable/of'
+import {empty} from 'rxjs/observable/empty'
+import {_throw as throwError} from 'rxjs/observable/throw'
 
 import { mockWorker, mockCache } from './helpers'
 import {
@@ -16,12 +19,12 @@ import mkReceiver from '../receiver'
 test.cb('should listen for REQUEST messages from worker and query the cache.', t => {
   const response = 'Cached Response'
   const url = `https://example.com`
-  const addRequestMock = () => rxOf(response)
+  const addRequestMock = () => of(response)
   const cacheMock = mockCache({
     get: (key: [ string, string ]) => {
       t.deepEqual(key, ['GET', url])
       t.end()
-      return rxOf('Cached Response')
+      return of('Cached Response')
     }
   })
   const [main, worker] = mockWorker()
@@ -53,7 +56,7 @@ test.cb('should call `addRequest` if there is a cache miss.', t => {
   const addRequestMock = () => {
     t.pass()
     t.end()
-    return rxOf(response)
+    return of(response)
   }
   const cacheMock = mockCache({})
   const [main, worker] = mockWorker()
@@ -66,7 +69,7 @@ test.cb('should call `addRequest` if there is a cache miss.', t => {
 test.cb('should send the response back to the worker with the request id and the type RESPONSE_NOTIFICATION', t => {
   const response = 'Requested Response'
   const url = `https://example.com`
-  const addRequestMock = () => rxOf(response)
+  const addRequestMock = () => of(response)
   const cacheMock = mockCache({})
   const requestMessage = msg(REQUEST, { url })
   const [main, worker] = mockWorker()
@@ -83,12 +86,12 @@ test.cb('should send the response back to the worker with the request id and the
 test.cb('should insert the response from `addRequest` into the cache.', t => {
   const response = 'Requested Response'
   const url = `https://example.com`
-  const addRequestMock = () => rxOf(response)
+  const addRequestMock = () => of(response)
   const cacheMock = mockCache({
     set: (key: [ string, string ], value: string) => {
       t.is(value, response)
       t.end()
-      return rxOf(value)
+      return of(value)
     }
   })
   const [main, worker] = mockWorker()
@@ -99,7 +102,7 @@ test.cb('should insert the response from `addRequest` into the cache.', t => {
 })
 
 test.cb('should call `clear` on the cache if it receives a CLEAR_CACHE message.', t => {
-  const addRequestMock = () => rxOf(true)
+  const addRequestMock = () => of(true)
   const cacheMock = mockCache({
     clear: () => {
       t.pass()
@@ -115,7 +118,7 @@ test.cb('should call `clear` on the cache if it receives a CLEAR_CACHE message.'
 
 test.cb('should `delete` a given item if it receives a INVALIDATE message.', t => {
   const url = `https://example.com`
-  const addRequestMock = () => rxOf(true)
+  const addRequestMock = () => of(true)
   const cacheMock = mockCache({
     delete: (key: [ string, string ]) => {
       t.deepEqual(key, ['GET', url])
@@ -146,7 +149,7 @@ test.cb('should propagate errors', t => {
 
 test.cb('should send back a complete message', t => {
   const url = `https://example.com`
-  const addRequestMock = () => rxOf(true)
+  const addRequestMock = () => of(true)
   const cacheMock = mockCache({})
   const [main, worker] = mockWorker()
   main.addEventListener('message', ({ data: message }) => {

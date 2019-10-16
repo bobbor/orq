@@ -11,8 +11,8 @@
  * memory. This has to be tested.
  * TODO: Kap cache object size.
  */
-
-import { throwError, of} from 'rxjs'
+import {of} from 'rxjs/observable/of'
+import {_throw as throwError} from 'rxjs/observable/throw'
 
 const undefinedValueError = 'undefined may not be passed as a value to setItem.'
 

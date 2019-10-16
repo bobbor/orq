@@ -1,7 +1,7 @@
 // @flow
 
 import test from 'ava'
-import {forkJoin} from 'rxjs'
+import {forkJoin} from 'rxjs/observable/forkJoin'
 import {concatMap, tap} from 'rxjs/operators'
 
 import type {Cache} from '../cache'

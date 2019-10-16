@@ -1,6 +1,9 @@
 // @flow
 
-import { Observable as O, Notification, fromEvent} from 'rxjs'
+import { Observable as O} from 'rxjs/Observable'
+import {Notification} from 'rxjs/Notification'
+import {fromEvent} from 'rxjs/observable/fromEvent'
+
 import {
   filter, pluck, dematerialize, tap, map
 } from 'rxjs/operators'

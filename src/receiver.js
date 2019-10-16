@@ -1,10 +1,8 @@
 // @flow
-
-import {
-  Subject,
-  fromEvent,
-  of, empty,
-} from 'rxjs'
+import {Subject} from 'rxjs/Subject'
+import {of} from 'rxjs/observable/of'
+import {empty} from 'rxjs/observable/empty'
+import {fromEvent} from 'rxjs/observable/fromEvent'
 
 import {
   pluck,

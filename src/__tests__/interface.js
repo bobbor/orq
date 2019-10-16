@@ -1,7 +1,8 @@
 // @flow
 
 import test from 'ava'
-import { Notification, merge} from 'rxjs'
+import { Notification} from 'rxjs/Notification'
+import {merge} from 'rxjs/observable/merge'
 
 import { mockWorker } from './helpers'
 import {

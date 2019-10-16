@@ -17,17 +17,14 @@
  * With the above policy, you set the `/list-fish` cache to be invalidated
  * whenever a POST is done on `/fish` or a PUT/PATH is done on `/fish/*`.
  */
-
-import {
-  of,
-  from as rxFrom
-} from 'rxjs'
 import {
   concatMap,
   mapTo,
   mergeAll,
   toArray,
 } from 'rxjs/operators'
+import {of} from 'rxjs/observable/of'
+import {from as _from} from 'rxjs/observable/from'
 
 import {dropLastSegment} from './lib/utils'
 import type {Cache} from './cache'
@@ -125,7 +122,7 @@ const mkCachePolicy =
               method === 'PATCH' ||
               method === 'POST'
           ) {
-            return rxFrom(
+            return _from(
                 dependantCacheUrls(url)
                 .map(url => cache.delete(genKey(['GET', url]))),
             ).pipe(

@@ -1,6 +1,8 @@
 import test from 'ava'
-import {of, forkJoin, throwError} from 'rxjs'
 import {delay, concatMap, tap, catchError} from 'rxjs/operators'
+import {of} from 'rxjs/observable/of'
+import {forkJoin} from 'rxjs/observable/forkJoin'
+import {_throw as throwError} from 'rxjs/observable/throw'
 
 import mkRequestQueue from '../request-queue'
 

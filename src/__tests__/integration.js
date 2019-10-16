@@ -1,7 +1,8 @@
 // @flow
 
 import test from 'ava'
-import { Observable as O, of } from 'rxjs'
+import { Observable as O } from 'rxjs/Observable'
+import {of} from 'rxjs/observable/of'
 import {
   delay, tap, concatMap
 } from 'rxjs/operators'

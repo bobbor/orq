@@ -1,6 +1,5 @@
 // @flow
-
-import { of } from 'rxjs'
+import {of} from 'rxjs/observable/of'
 import {
   delay, concatMap, tap
 } from 'rxjs/operators'

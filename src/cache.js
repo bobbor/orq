@@ -1,5 +1,5 @@
 // @flow
-import { Observable as O } from 'rxjs'
+import { Observable as O } from 'rxjs/Observable'
 
 export type Cache<K> = {
   get: (key: K) => O<any>,
