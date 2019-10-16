@@ -1,6 +1,6 @@
 // @flow
 
-import Rx, { Observable as O } from 'rxjs'
+import { Observable as O, of } from 'rxjs'
 import EventTarget from 'dom-event-target'
 import type { Cache } from '../../cache'
 
@@ -25,22 +25,22 @@ export const mockWorker = () => {
 
 type CacheKey = [ string, string ]
 type CacheMockOverrides = {
-  get?: (key: CacheKey) => Rx.Observable<any>,
-  set?: (key: CacheKey, value: any) => Rx.Observable<any>,
-  has?: (key: CacheKey) => Rx.Observable<boolean>,
-  delete?: (key: CacheKey) => Rx.Observable<true>,
-  deletePattern?: (pattern: RegExp) => Rx.Observable<Array<true>>,
-  clear?: () => Rx.Observable<true>,
+  get?: (key: CacheKey) => O<any>,
+  set?: (key: CacheKey, value: any) => O<any>,
+  has?: (key: CacheKey) => O<boolean>,
+  delete?: (key: CacheKey) => O<true>,
+  deletePattern?: (pattern: RegExp) => O<Array<true>>,
+  clear?: () => O<true>,
 }
 
 export const mockCache = (
   overrides: CacheMockOverrides
 ): Cache<CacheKey> =>
   Object.assign({
-    get: (key: CacheKey) => O.of(undefined),
-    set: (key: CacheKey, value: string) => O.of(value),
-    has: (key: CacheKey) => O.of(true),
-    delete: (key: CacheKey) => O.of(true),
-    deletePattern: (pattern: RegExp) => O.of([true]),
-    clear: () => O.of(true),
+    get: (key: CacheKey) => of(undefined),
+    set: (key: CacheKey, value: string) => of(value),
+    has: (key: CacheKey) => of(true),
+    delete: (key: CacheKey) => of(true),
+    deletePattern: (pattern: RegExp) => of([true]),
+    clear: () => of(true),
   }, overrides)

@@ -11,9 +11,6 @@ export type Message<P> = {|
 export const isMsg = <P>(message: Message<P>) =>
   typeof message === 'object'
 
-export const isMsgType = (type: string) => <P>(message: Message<P>) =>
-  isMsg(message) && message.type === type
-
 export const msg = <P>(type: string, payload?: P, id?: string): Message<P> => ({
   type,
   payload,
@@ -25,7 +22,7 @@ export const unsubscribe = <P>({ id }: Message<P>) => ({
   id
 })
 
-export const isResponseMsg = <P>({ type, id }: Message<P>) => (message: Message<P>) =>
+export const isResponseMsg = <P>({ id }: Message<P>) => (message: Message<P>) =>
   isMsg(message) &&
   message.id === id
 

@@ -2,22 +2,16 @@
  * request-queue manages request concurrency and eliminates duplicate requests.
  */
 
-import { BehaviorSubject } from 'rxjs/BehaviorSubject'
-// $FlowFixMe
-import 'rxjs/add/operator/map'
-// $FlowFixMe
-import 'rxjs/add/operator/do'
-// $FlowFixMe
-import 'rxjs/add/operator/share'
-// $FlowFixMe
-import 'rxjs/add/operator/materialize'
-// $FlowFixMe
-import 'rxjs/add/operator/dematerialize'
-// $FlowFixMe
-import 'rxjs/add/operator/filter'
-// $FlowFixMe
-import 'rxjs/add/operator/mergeAll'
-
+import { BehaviorSubject } from 'rxjs'
+import {
+  map,
+  tap,
+  share,
+  materialize,
+  dematerialize,
+  filter,
+  mergeAll
+} from 'rxjs/operators'
 import type { Request, RequestOptions } from './request'
 
 const defaultOptions = {
@@ -51,11 +45,8 @@ export const mkRequestQueue = (
       openRequests = openRequests.filter(([ key ]) => key !== dropKey)
     },
   }))([])
-  const test = Symbol()
-
   const requests$ = new BehaviorSubject()
-  const responses$ = requests$
-    .mergeAll(maxConcurrent)
+  const responses$ = requests$.pipe(mergeAll(maxConcurrent))
 
   return (
     url: string,
@@ -70,17 +61,19 @@ export const mkRequestQueue = (
         duplicateTracker.add(key, url)
       }
       requests$.next(
-        request(url, reqOptions)
-          .share()
-          .materialize()
-          .map(notification => [key, notification])
-          .do((n) => duplicateTracker.drop(key))
+        request(url, reqOptions).pipe(
+            share(),
+            materialize(),
+            map(notification => [key, notification]),
+            tap(() => duplicateTracker.drop(key))
+        )
       )
     }
-    return responses$
-      .filter(([ resKey ]) => resKey === key)
-      .map(([, notification]) => notification)
-      .dematerialize()
+    return responses$.pipe(
+      filter(([ resKey ]) => resKey === key),
+      map(([, notification]) => notification),
+      dematerialize()
+    )
   }
 }
 

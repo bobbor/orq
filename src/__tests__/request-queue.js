@@ -1,14 +1,14 @@
 import test from 'ava'
-import { Observable as O } from 'rxjs'
+import {of, forkJoin, throwError} from 'rxjs'
+import {delay, concatMap, tap, catchError} from 'rxjs/operators'
 
-import type { Request, RequestOptions } from '../request'
 import mkRequestQueue from '../request-queue'
 
 test('request-queue should call the input request function', t => {
   t.plan(1)
-  const request = (url: string, options?: RequestOptions) => {
+  const request = () => {
     t.pass()
-    return O.of(true)
+    return of(true)
   }
   return mkRequestQueue(request)('https://example.com')
 })
@@ -16,52 +16,56 @@ test('request-queue should call the input request function', t => {
 test('request-queue should only make N requests in parallel and queue further requests until others are completed', t => {
   t.plan(1)
   let runningRequests = 0
-  const request = (url: string, options?: RequestOptions) => {
+  const request = () => {
     runningRequests++
     if (runningRequests > 4) t.fail()
-    return O.of(true).delay(10)
+    return of(true).pipe(delay(10))
   }
   const queue = mkRequestQueue(request)
-  return O.forkJoin([
+  return forkJoin([
     queue('https://example.com'),
     queue('https://example.com'),
     queue('https://example.com'),
     queue('https://example.com'),
     queue('https://example.com'),
-  ])
-    .do(() => { t.pass() })
+  ]).pipe(
+      tap(() => {
+        t.pass()
+      }),
+  )
 })
 
 test('request-queue should propagate errors', t => {
   t.plan(2)
   const error = 'YOLO'
   let i = 0
-  const request = (url: string, options?: RequestOptions) => {
+  const request = () => {
     return i++ === 0
-      ? O.throw(error)
-      : O.of(true)
+        ? throwError(error)
+        : of(true)
   }
   const queue = mkRequestQueue(request)
-  return queue('https://example.com')
-    .catch((err) => {
-      t.is(err, error)
-      return O.of(true)
-    })
-    .concatMap(() => queue('https://example.com'))
-    .do(res => t.true(res))
+  return queue('https://example.com').pipe(
+      catchError((err) => {
+        t.is(err, error)
+        return of(true)
+      }),
+      concatMap(() => queue('https://example.com')),
+      tap(res => t.true(res)),
+  )
 })
 
 test('request-queue should eliminate duplicate requests in the queue', t => {
   let n = 0
-  const request = (url: string, options?: RequestOptions) => {
-    return O.of(++n).delay(10)
+  const request = () => {
+    return of(++n).pipe(delay(10))
   }
   const queue = mkRequestQueue(request)
-  return O.forkJoin([
+  return forkJoin([
     queue('https://example.com'),
     queue('https://example.com'),
-  ]).do(([ first, second ]) => {
+  ]).pipe(tap(([first, second]) => {
     t.is(first, 1)
     t.is(second, 1)
-  })
+  }))
 })

@@ -1,7 +1,7 @@
 // @flow
 
 import test from 'ava'
-import { Notification, Observable as O } from 'rxjs'
+import { Notification, merge} from 'rxjs'
 
 import { mockWorker } from './helpers'
 import {
@@ -82,7 +82,7 @@ test('addRequest should redo a request when a new subscription is made', (t) => 
   const r$ = mkInterface(main)
     .addRequest('https://example.com')
 
-  return O.merge(r$, r$)
+  return merge(r$, r$)
 })
 
 test('`clear` should send a clear message to the worker.', t => {

@@ -1,27 +1,15 @@
 // @flow
 
-import { Observable as O } from 'rxjs/Observable'
-import { Notification } from 'rxjs/Notification'
-// $FlowFixMe
-import 'rxjs/add/observable/fromEvent'
-// $FlowFixMe
-import 'rxjs/add/operator/filter'
-// $FlowFixMe
-import 'rxjs/add/operator/pluck'
-// $FlowFixMe
-import 'rxjs/add/operator/dematerialize'
-// $FlowFixMe
-import 'rxjs/add/operator/do'
-// $FlowFixMe
-import 'rxjs/add/operator/map'
+import { Observable as O, Notification, fromEvent} from 'rxjs'
+import {
+  filter, pluck, dematerialize, tap, map
+} from 'rxjs/operators'
 
 import {
   isResponseMsg,
-  isMsgType,
   msg,
   unsubscribe,
   REQUEST,
-  RESPONSE_NOTIFICATION,
   CLEAR_CACHE,
   INVALIDATE,
 } from './lib/message'
@@ -67,22 +55,23 @@ const mkInterface = <UrlMap, Responses> (
 }
 
 const postMessageTo = (worker: Worker) => {
-  const responseNotifications$ = O.fromEvent(worker, 'message')
-    .pluck('data')
+  const responseNotifications$ = fromEvent(worker, 'message').pipe(
+    pluck('data')
+  )
 
   return (message: Message<any>, cancelable?: boolean) =>
     O.create((o) => {
       let done = false
       worker.postMessage(message)
-      responseNotifications$
-        .filter(isResponseMsg(message))
-        .pluck('payload')
-        .map(({ kind, value, error }) =>
+      responseNotifications$.pipe(
+        filter(isResponseMsg(message)),
+        pluck('payload'),
+        map(({ kind, value, error }) =>
           new Notification(kind, value, error)
-        )
-        .dematerialize()
-        .do(undefined, undefined, () => { done = true })
-        .subscribe(o)
+        ),
+        dematerialize(),
+        tap(undefined, undefined, () => { done = true })
+      ).subscribe(o)
       const teardown = () => {
         if (done) return
         worker.postMessage(unsubscribe(message))
